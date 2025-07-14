@@ -4,8 +4,7 @@ import { sessionOptions, UserSession } from '@/lib/session';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
-  const res = NextResponse.next();
-  const session = await getIronSession<UserSession>(req, res, sessionOptions);
+  const session = await getIronSession<UserSession>(req, {} as any, sessionOptions); // <-- ubah ini
 
   if (!session.user) {
     return NextResponse.json({ isLoggedIn: false });

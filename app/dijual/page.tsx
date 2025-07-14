@@ -10,7 +10,7 @@ export default function DijualPage() {
   const [filtered, setFiltered] = useState<Property[]>([]);
 
   useEffect(() => {
-    fetch('https://687134f07ca4d06b34b9b681.mockapi.io/properties')
+    fetch('https://6873e6cac75558e2735597fd.mockapi.io/properties')
       .then((res) => res.json())
       .then((data) => {
         const salesOnly = data.filter(

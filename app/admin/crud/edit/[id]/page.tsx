@@ -29,7 +29,7 @@ export default function EditPropertyPage() {
 
   useEffect(() => {
     if (id) {
-      fetch(`https://687134f07ca4d06b34b9b681.mockapi.io/properties/${id}`)
+      fetch(`https://6873e6cac75558e2735597fd.mockapi.io/properties/${id}`)
         .then((res) => res.json())
         .then((data) => setForm(data));
     }
@@ -43,14 +43,14 @@ export default function EditPropertyPage() {
     e.preventDefault();
 
     try {
-      const res = await fetch(`https://687134f07ca4d06b34b9b681.mockapi.io/properties/${id}`, {
+      const res = await fetch(`https://6873e6cac75558e2735597fd.mockapi.io/properties/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       });
 
       if (res.ok) {
-        router.push('/admin');
+        router.push('/admin/crud/manage');
       } else {
         console.error('Gagal mengupdate properti');
       }

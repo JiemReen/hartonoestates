@@ -11,7 +11,6 @@ import {
   CardContent,
   Typography,
   Box,
-  Grid,
   CardMedia,
 } from '@mui/material';
 
@@ -26,7 +25,7 @@ export default function KelolaPropertiPage() {
     if (!loggedIn || role !== 'admin') {
       router.replace('/');
     } else {
-      fetch('https://687134f07ca4d06b34b9b681.mockapi.io/properties')
+      fetch('https://6873e6cac75558e2735597fd.mockapi.io/properties')
         .then((res) => res.json())
         .then((data) => {
           setAllProperties(data);
@@ -77,7 +76,7 @@ export default function KelolaPropertiPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Yakin ingin menghapus properti ini?')) return;
-    await fetch(`https://687134f07ca4d06b34b9b681.mockapi.io/properties/${id}`, {
+    await fetch(`https://6873e6cac75558e2735597fd.mockapi.io/properties/${id}`, {
       method: 'DELETE',
     });
     setFiltered((prev) => prev.filter((item) => item.id !== id));
@@ -91,42 +90,49 @@ export default function KelolaPropertiPage() {
 
       <SearchFilterBar onSearch={handleSearch} />
 
-      <Grid container spacing={2} sx={{ mt: 2 }}>
+      <Box
+        display="grid"
+        gridTemplateColumns={{
+          xs: '1fr',
+          sm: '1fr 1fr',
+          md: '1fr 1fr 1fr',
+        }}
+        gap={2}
+        mt={2}
+      >
         {filtered.map((item) => (
-          <Grid item xs={12} md={6} lg={4} key={item.id}>
-            <Card>
-              <CardMedia
-                component="img"
-                height="160"
-                image={item.image}
-                alt={item.title}
-              />
-              <CardContent>
-                <Typography variant="h6">{item.title}</Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {item.location} — {item.property} — Rp {item.price}
-                </Typography>
-                <Box sx={{ mt: 2, display: 'flex', gap: 1 }}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => router.push(`/admin/crud/edit/${item.id}`)}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    color="error"
-                    onClick={() => handleDelete(item.id)}
-                  >
-                    Hapus
-                  </Button>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
+          <Card key={item.id}>
+            <CardMedia
+              component="img"
+              height="160"
+              image={item.image}
+              alt={item.title}
+            />
+            <CardContent>
+              <Typography variant="h6">{item.title}</Typography>
+              <Typography variant="body2" color="text.secondary">
+                {item.location} — {item.property} — Rp {item.price}
+              </Typography>
+              <Box sx={{ mt: 2, display: 'flex', gap: 1 }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => router.push(`/admin/crud/edit/${item.id}`)}
+                >
+                  Edit
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={() => handleDelete(item.id)}
+                >
+                  Hapus
+                </Button>
+              </Box>
+            </CardContent>
+          </Card>
         ))}
-      </Grid>
+      </Box>
     </Box>
   );
 }

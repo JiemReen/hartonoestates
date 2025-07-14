@@ -4,8 +4,8 @@ const nextConfig = {
     ignoreDuringBuilds: true, // ⛔️ Nonaktifkan ESLint saat build production (fix Vercel)
   },
   images: {
-    domains: ['images.unsplash.com'],
+    domains: ['images.unsplash.com','plus.unsplash.com',],
   },
 };
 
-export default nextConfig;
+module.exports = nextConfig;

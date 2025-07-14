@@ -19,17 +19,24 @@ const AuthContext = createContext<AuthContextType>({
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [role, setRole] = useState<string | null>(null);
+  const [loaded, setLoaded] = useState(false); // 👈 penting!
 
-  // app/context/AuthContext.tsx (di dalam useEffect)
   useEffect(() => {
     async function checkSession() {
-      const res = await fetch('/api/auth/session');
-      if (res.ok) {
-        const data = await res.json();
-        setLoggedIn(data.isLoggedIn);
-        setRole(data.role);
+      try {
+        const res = await fetch('/api/auth/session');
+        if (res.ok) {
+          const data = await res.json();
+          setLoggedIn(data.isLoggedIn);
+          setRole(data.role);
+        }
+      } catch (err) {
+        console.error('❌ Gagal mengambil sesi:', err);
+      } finally {
+        setLoaded(true); // 👈 render hanya setelah ini true
       }
     }
+
     checkSession();
   }, []);
 
@@ -46,6 +53,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setLoggedIn(false);
     setRole(null);
   };
+
+  if (!loaded) return null; // 👈 penting: cegah mismatch render saat data belum siap
 
   return (
     <AuthContext.Provider value={{ loggedIn, role, login, logout }}>

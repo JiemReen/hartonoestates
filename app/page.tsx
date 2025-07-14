@@ -9,9 +9,9 @@ import {
   useTheme,
   CircularProgress,
 } from '@mui/material';
-import Grid from '@mui/material/Grid';
 import Link from 'next/link';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import type { Property } from '@/types/Property';
 
@@ -36,7 +36,7 @@ export default function HomePage() {
   const theme = useTheme();
 
   useEffect(() => {
-    fetch('https://687134f07ca4d06b34b9b681.mockapi.io/properties')
+    fetch('https://6873e6cac75558e2735597fd.mockapi.io/properties')
       .then((res) => res.json())
       .then((data) => {
         const sorted = [...data].reverse();
@@ -49,13 +49,24 @@ export default function HomePage() {
   return (
     <>
       <Box>
-        <Swiper spaceBetween={30} slidesPerView={1} loop>
+        <Swiper
+              spaceBetween={30}
+              slidesPerView={1}
+              loop
+              autoplay={{
+                delay: 3000,
+                disableOnInteraction: false,
+              }}
+              modules={[Autoplay]}
+            >
           {items.map((item) => (
             <SwiperSlide key={item.id}>
               <Box
                 sx={{
                   position: 'relative',
                   height: { xs: 450, sm: 600, md: 800 },
+                  maxHeight: '100vh',
+                  overflow: 'hidden',
                 }}
               >
                 <Box
@@ -110,7 +121,7 @@ export default function HomePage() {
                       textShadow: '0 2px 8px rgba(0,0,0,0.3)',
                     }}
                   >
-                    Selamat Datang di Real Estate App
+                    Selamat Datang di Hartono Estate
                   </Typography>
                   <Typography
                     variant="body1"
@@ -185,13 +196,21 @@ export default function HomePage() {
               <CircularProgress color="primary" />
             </Box>
           ) : (
-            <Grid container spacing={3}>
+            <Box
+              display="grid"
+              gridTemplateColumns={{
+                xs: '1fr',
+                sm: 'repeat(2, 1fr)',
+                md: 'repeat(3, 1fr)',
+              }}
+              gap={3}
+            >
               {properties.map((item) => (
-                <Grid item xs={12} sm={6} md={4} key={item.id} component="div">
+                <Box key={item.id}>
                   <PropertyCard data={item} />
-                </Grid>
+                </Box>
               ))}
-            </Grid>
+            </Box>
           )}
         </Box>
       </Box>

@@ -1,43 +1,42 @@
 import PropertyCard from '@/components/PropertyCard';
-import { Container, Typography, Grid } from '@mui/material';
+import { Container, Typography, Box } from '@mui/material';
 
 type Property = {
   id: string;
   title: string;
   image: string;
   location: string;
-  type: string;
-  area: number;
   price: number;
-  description: string;
 };
 
-async function fetchProperti(): Promise<Property[]> {
+export default async function PropertiPage() {
   const res = await fetch('https://687134f07ca4d06b34b9b681.mockapi.io/properties', {
     cache: 'no-store',
   });
 
-  if (!res.ok) throw new Error('Gagal memuat data properti');
+  if (!res.ok) {
+    throw new Error('Gagal memuat properti');
+  }
 
-  return res.json();
-}
-
-export default async function PropertiPage() {
-  const data = await fetchProperti();
+  const data: Property[] = await res.json();
 
   return (
     <Container sx={{ py: 4 }}>
-      <Typography variant="h4" fontWeight="bold" gutterBottom>
+      <Typography variant="h4" gutterBottom>
         Daftar Properti
       </Typography>
 
-      <Grid container spacing={3}>
+      <Box
+        display="grid"
+        gridTemplateColumns={{ xs: '1fr', sm: '1fr 1fr', md: '1fr 1fr 1fr' }}
+        gap={2}
+      >
         {data.map((item) => (
-          <Grid item xs={12} sm={6} md={4} key={item.id}>
+          <Box key={item.id}>
             <PropertyCard data={item} />
-          </Grid>
+          </Box>
         ))}
-      </Grid>
+      </Box>
     </Container>
   );
 }

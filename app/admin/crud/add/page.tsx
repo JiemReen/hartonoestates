@@ -34,7 +34,7 @@ export default function AddPropertyPage() {
         e.preventDefault();
 
         try {
-        const res = await fetch('https://687134f07ca4d06b34b9b681.mockapi.io/properties', {
+        const res = await fetch('https://6873e6cac75558e2735597fd.mockapi.io/properties', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(form),

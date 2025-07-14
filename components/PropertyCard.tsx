@@ -1,69 +1,40 @@
-'use client'
+'use client';
+import Link from 'next/link';
+import { Card, CardContent, Typography, CardActionArea, Box } from '@mui/material';
+import Image from 'next/image';
 
-import Link from 'next/link'
-import {
-  Card,
-  CardContent,
-  CardMedia,
-  Typography,
-  Box,
-  Chip
-} from '@mui/material'
-import { FaMapMarkerAlt, FaRulerCombined } from 'react-icons/fa'
+type Property = {
+  id: string;
+  title: string;
+  image: string;
+  location: string;
+  price: number;
+};
 
-import type { Property } from '@/types/Property';
-
-type Props = {
-  data: Property
-}
-
-export default function PropertyCard({ data }: Props) {
+export default function PropertyCard({ data }: { data: Property }) {
   return (
     <Link href={`/properti/${data.id}`} passHref>
-      <Card
-        sx={{
-          maxWidth: 350,
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          transition: '0.3s',
-          cursor: 'pointer',
-          '&:hover': { transform: 'scale(1.02)' }
-        }}
-      >
-        <CardMedia
-          component="img"
-          height="200"
-          image={data.image}
-          alt={data.title}
-        />
-        <CardContent sx={{ flexGrow: 1 }}>
-          <Typography variant="h6" gutterBottom noWrap>
-            {data.title}
-          </Typography>
-
-          <Box display="flex" alignItems="center" gap={1} color="gray" fontSize={14} mb={1}>
-            <FaMapMarkerAlt />
-            <Typography variant="body2" color="text.secondary">
+      <Card sx={{ width: '100%' }}>
+        <CardActionArea>
+          <Box sx={{ position: 'relative', width: '100%', height: 200 }}>
+            <Image
+              src={data.image}
+              alt={data.title}
+              fill
+              style={{ objectFit: 'cover', borderTopLeftRadius: 4, borderTopRightRadius: 4 }}
+            />
+          </Box>
+          <CardContent>
+            <Typography variant="h6">{data.title}</Typography>
+            <Typography variant="body2" color="textSecondary">
               {data.location}
             </Typography>
-          </Box>
-
-          <Typography variant="body2" color="text.secondary" mb={1}>
-            Harga Rp {data.price.toLocaleString('id-ID')}
-          </Typography>
-
-          <Box display="flex" gap={1} mb={1}>
-            <Chip label={data.property} size="small" color="success" />
-            <Chip label={data.type === 'sale' ? 'Jual' : 'Sewa'} size="small" color="error" />
-          </Box>
-
-          <Box display="flex" alignItems="center" gap={1} fontSize={14}>
-            <FaRulerCombined />
-            <Typography variant="body2">{data.area} m²</Typography>
-          </Box>
-        </CardContent>
+            <Typography variant="body1" fontWeight="bold" color="primary">
+              Rp {data.price.toLocaleString('id-ID')}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
       </Card>
     </Link>
-  )
+  );
 }
